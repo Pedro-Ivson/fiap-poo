@@ -4,7 +4,7 @@ package br.com.fiapride.model;
  * Representa um celular com capacidade limitada de armazenamento.
  */
 public class Celular {
-    private final String cor;
+    private String cor;
     private final int memoriaTotal;
     private int memoria;
 
@@ -19,19 +19,13 @@ public class Celular {
      * Cria um celular com capacidade total e memória livre iniciais.
      */
     public Celular(String cor, int memoriaTotal, int memoriaInicial) {
-        if (cor == null || cor.isBlank()) {
-            throw new IllegalArgumentException("A cor do celular é obrigatória.");
-        }
         if (memoriaTotal <= 0) {
             throw new IllegalArgumentException("A memória total deve ser maior que zero.");
         }
-        if (memoriaInicial < 0 || memoriaInicial > memoriaTotal) {
-            throw new IllegalArgumentException("A memória inicial deve estar entre zero e a memória total.");
-        }
 
-        this.cor = cor;
         this.memoriaTotal = memoriaTotal;
-        this.memoria = memoriaInicial;
+        setCor(cor);
+        setMemoria(memoriaInicial);
     }
 
     /**
@@ -47,7 +41,7 @@ public class Celular {
             return;
         }
 
-        this.memoria -= tamanhoGb;
+        setMemoria(this.memoria - tamanhoGb);
         System.out.println("Aplicativo instalado com sucesso! Espaço livre atual: " + this.memoria + "GB.");
     }
 
@@ -64,7 +58,7 @@ public class Celular {
             return;
         }
 
-        this.memoria += quantidadeLiberada;
+        setMemoria(this.memoria + quantidadeLiberada);
         System.out.println("Limpeza concluída! Novo espaço livre disponível: " + this.memoria + "GB.");
     }
 
@@ -78,5 +72,24 @@ public class Celular {
 
     public int getMemoria() {
         return memoria;
+    }
+
+    private void setCor(String cor) {
+        if (cor == null || cor.isBlank()) {
+            throw new IllegalArgumentException("A cor do celular é obrigatória.");
+        }
+
+        this.cor = cor;
+    }
+
+    /**
+     * Setter privado com a regra de que a memória livre nunca pode sair dos limites físicos.
+     */
+    private void setMemoria(int valor) {
+        if (valor < 0 || valor > this.memoriaTotal) {
+            throw new IllegalArgumentException("A memória deve ficar entre zero e a memória total.");
+        }
+
+        this.memoria = valor;
     }
 }

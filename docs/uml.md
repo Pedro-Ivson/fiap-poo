@@ -12,6 +12,9 @@ classDiagram
         +String getNome()
         +String getCpf()
         +double getSaldo()
+        -void setNome(String nome)
+        -void setCpf(String cpf)
+        -void setSaldo(double valor)
     }
 
     class Celular {
@@ -25,6 +28,8 @@ classDiagram
         +String getCor()
         +int getMemoriaTotal()
         +int getMemoria()
+        -void setCor(String cor)
+        -void setMemoria(int valor)
     }
 
     class Veiculo {
@@ -38,7 +43,8 @@ classDiagram
         +String getProprietario()
         +String getPlaca()
         +double getCombustivel()
+        -void setCombustivel(double valor)
     }
 ```
 
-Os métodos de negócio aparecem na terceira divisão de cada classe e são responsáveis por alterar o estado somente após validar as regras correspondentes. Em `Veiculo`, os atributos são privados e não existem setters públicos: as alterações passam por `abastecer` e `consumir`, que impedem valores inválidos e combustível negativo.
+Os métodos de negócio aparecem na terceira divisão de cada classe e alteram o estado somente após validar as regras correspondentes. Os getters são públicos para leitura controlada, enquanto os setters são privados para impedir alterações diretas externas. `memoriaTotal`, `proprietario` e `placa` não possuem setters porque não devem mudar depois da construção.

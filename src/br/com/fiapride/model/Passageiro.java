@@ -4,21 +4,14 @@ package br.com.fiapride.model;
  * Representa um passageiro e sua carteira digital no FiapRide.
  */
 public class Passageiro {
-    private final String nome;
-    private final String cpf;
+    private String nome;
+    private String cpf;
     private double saldo;
 
     public Passageiro(String nome, String cpf) {
-        if (nome == null || nome.isBlank()) {
-            throw new IllegalArgumentException("O nome do passageiro é obrigatório.");
-        }
-        if (cpf == null || cpf.isBlank()) {
-            throw new IllegalArgumentException("O CPF do passageiro é obrigatório.");
-        }
-
-        this.nome = nome;
-        this.cpf = cpf;
-        this.saldo = 0.0;
+        setNome(nome);
+        setCpf(cpf);
+        setSaldo(0.0);
     }
 
     /**
@@ -30,7 +23,13 @@ public class Passageiro {
             return;
         }
 
-        this.saldo += valor;
+        double novoSaldo = this.saldo + valor;
+        if (!Double.isFinite(novoSaldo)) {
+            System.out.println("Erro: O saldo resultante não é válido.");
+            return;
+        }
+
+        setSaldo(novoSaldo);
         System.out.printf("Recarga de R$%.2f realizada. Novo saldo: R$%.2f%n", valor, this.saldo);
     }
 
@@ -47,7 +46,7 @@ public class Passageiro {
             return;
         }
 
-        this.saldo -= custo;
+        setSaldo(this.saldo - custo);
         System.out.printf("Viagem de R$%.2f paga. Saldo restante: R$%.2f%n", custo, this.saldo);
     }
 
@@ -61,5 +60,33 @@ public class Passageiro {
 
     public double getSaldo() {
         return saldo;
+    }
+
+    /**
+     * Setter privado: nenhuma classe externa pode definir o saldo diretamente.
+     */
+    private void setSaldo(double valor) {
+        if (!Double.isFinite(valor) || valor < 0) {
+            System.out.println("Erro de Segurança: Tentativa de definir saldo negativo bloqueada!");
+            return;
+        }
+
+        this.saldo = valor;
+    }
+
+    private void setNome(String nome) {
+        if (nome == null || nome.isBlank()) {
+            throw new IllegalArgumentException("O nome do passageiro é obrigatório.");
+        }
+
+        this.nome = nome;
+    }
+
+    private void setCpf(String cpf) {
+        if (cpf == null || cpf.isBlank()) {
+            throw new IllegalArgumentException("O CPF do passageiro é obrigatório.");
+        }
+
+        this.cpf = cpf;
     }
 }

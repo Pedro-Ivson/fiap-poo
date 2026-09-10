@@ -25,7 +25,7 @@ public class Veiculo {
 
         this.proprietario = proprietario;
         this.placa = placa;
-        this.combustivel = combustivelInicial;
+        setCombustivel(combustivelInicial);
     }
 
     /**
@@ -33,7 +33,7 @@ public class Veiculo {
      */
     public void abastecer(double litros) {
         validarQuantidade(litros);
-        this.combustivel += litros;
+        setCombustivel(this.combustivel + litros);
     }
 
     /**
@@ -45,7 +45,7 @@ public class Veiculo {
             throw new IllegalArgumentException("Combustivel insuficiente para o consumo solicitado.");
         }
 
-        this.combustivel -= litros;
+        setCombustivel(this.combustivel - litros);
     }
 
     public String getProprietario() {
@@ -58,6 +58,14 @@ public class Veiculo {
 
     public double getCombustivel() {
         return combustivel;
+    }
+
+    /**
+     * Setter privado que impede que o combustível fique negativo ou inválido.
+     */
+    private void setCombustivel(double valor) {
+        validarCombustivel(valor);
+        this.combustivel = valor;
     }
 
     private static void validarTexto(String valor, String mensagem) {

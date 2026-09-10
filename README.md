@@ -1,92 +1,80 @@
 # FiapRide - Sistema de Mobilidade Urbana
 
-Projeto incremental da disciplina de Programação Orientada a Objetos. O FiapRide modela passageiros com carteira digital, celulares com armazenamento limitado e veículos da frota com combustível protegido por encapsulamento.
+Projeto incremental da disciplina de Programação Orientada a Objetos. O FiapRide modela passageiros com carteira digital, celulares com armazenamento limitado e veículos da frota com estado protegido por encapsulamento.
 
 ## Estrutura
 
 ```text
 src/br/com/fiapride/
-├── main/SistemaPrincipal.java
+├── main/
+│   ├── SistemaPrincipal.java
+│   ├── TesteCelular.java
+│   └── TesteVeiculo.java
 └── model/
     ├── Celular.java
     ├── Passageiro.java
     └── Veiculo.java
-docs/uml.md
+docs/
+├── fiapride.puml
+└── uml.md
 ```
 
-## Classe `Veiculo`
+## Encapsulamento
 
-Representa um veículo da frota e protege seu estado interno.
+Todos os atributos de modelo são `private`. Os getters públicos permitem leitura controlada, enquanto os setters são privados e só podem ser usados pela própria classe. Assim, classes externas não conseguem alterar diretamente o estado dos objetos.
 
-### Atributos
-
-- `proprietario`: nome do responsável pelo veículo.
-- `placa`: identificação do veículo.
-- `combustivel`: quantidade disponível em litros.
-
-Os três atributos são privados. O proprietário e a placa são definidos no construtor, e o combustível só é alterado pelos métodos de comportamento.
-
-### Métodos
-
-- `abastecer(double litros)`: adiciona apenas uma quantidade positiva e finita.
-- `consumir(double litros)`: consome apenas uma quantidade válida e nunca permite combustível negativo.
-
-Tentativas inválidas geram `IllegalArgumentException`, mantendo o objeto em um estado consistente.
-
-## Classe `Passageiro`
+### Classe `Passageiro`
 
 Representa uma pessoa que utiliza o FiapRide.
 
-### Atributos
+- `nome` e `cpf`: definidos na construção e protegidos por setters privados.
+- `saldo`: alterado somente por `adicionarSaldo` e `pagarViagem`.
+- `getNome()`, `getCpf()` e `getSaldo()`: getters públicos.
+- `setNome`, `setCpf` e `setSaldo`: setters privados; `setSaldo` bloqueia valores negativos ou não finitos.
+- `adicionarSaldo(double valor)`: aceita somente recargas positivas.
+- `pagarViagem(double custo)`: aceita somente custos positivos e saldo suficiente.
 
-- `nome`: nome do passageiro.
-- `cpf`: identificador do passageiro.
-- `saldo`: valor disponível na carteira digital.
-
-Os atributos são protegidos pela classe; o saldo só é alterado pelos métodos de comportamento.
-
-### Métodos
-
-- `adicionarSaldo(double valor)`: adiciona uma recarga somente quando o valor é positivo e finito.
-- `pagarViagem(double custo)`: paga uma viagem somente quando o custo é positivo e há saldo suficiente.
-
-## Classe `Celular`
+### Classe `Celular`
 
 Representa um celular e o controle de seu armazenamento.
 
-### Atributos
+- `cor`: protegida por setter privado.
+- `memoriaTotal`: definida na construção e sem setter, pois a capacidade física não muda.
+- `memoria`: alterada por `instalarAplicativo` e `esvaziarMemoria`, usando setter privado que mantém o valor entre zero e `memoriaTotal`.
 
-- `cor`: cor do aparelho.
-- `memoriaTotal`: capacidade física máxima em GB.
-- `memoria`: espaço livre atual em GB.
+### Classe `Veiculo`
 
-### Métodos
+Representa um veículo da frota.
 
-- `instalarAplicativo(int tamanhoGb)`: reduz a memória livre quando o tamanho é positivo e há espaço disponível.
-- `esvaziarMemoria(int quantidadeLiberada)`: aumenta a memória livre sem ultrapassar `memoriaTotal`.
+- `proprietario` e `placa`: definidos na construção e sem setters, pois identificam o veículo.
+- `combustivel`: alterado apenas por `abastecer` e `consumir`, através de setter privado que impede valores negativos ou inválidos.
+- `getProprietario()`, `getPlaca()` e `getCombustivel()`: getters públicos.
 
-As validações impedem valores negativos, aplicativos sem tamanho válido, falta de espaço e memória livre acima da capacidade física.
+## Executáveis e testes
 
-## Como executar
+- `SistemaPrincipal`: testa exclusivamente o fluxo do FiapRide com `Passageiro`.
+- `TesteCelular`: testa o objeto pessoal `Celular`, incluindo tentativas inválidas.
+- `TesteVeiculo`: testa o objeto pessoal `Veiculo`, incluindo abastecimento e consumo inválidos.
 
-É necessário ter um JDK instalado. No Eclipse, execute `SistemaPrincipal.java`.
-
-No PowerShell, a execução também pode ser feita assim:
+No PowerShell:
 
 ```powershell
 $fontes = Get-ChildItem src -Recurse -Filter *.java | Select-Object -ExpandProperty FullName
 javac -encoding UTF-8 -d out $fontes
 java -cp out br.com.fiapride.main.SistemaPrincipal
+java -cp out br.com.fiapride.main.TesteCelular
+java -cp out br.com.fiapride.main.TesteVeiculo
 ```
 
-O programa demonstra cenários válidos e inválidos para as três classes, incluindo recarga, pagamento, instalação de aplicativo, liberação de memória, abastecimento e consumo de combustível.
+As linhas comentadas de atribuição direta nos executáveis mostram exemplos que deixariam de compilar, comprovando a proteção dos atributos.
 
 ## UML
 
-O diagrama de classes atualizado está em [docs/uml.md](docs/uml.md), e a imagem usada na entrega está em `diagrama-veiculo-refatorado.png`. O diagrama registra os atributos, construtores e comportamentos implementados no projeto.
+O diagrama atualizado está em [docs/uml.md](docs/uml.md), com fonte editável em [docs/fiapride.puml](docs/fiapride.puml), e a imagem do módulo de veículos em `diagrama-veiculo-refatorado.png`. O diagrama registra os atributos privados, getters públicos, setters privados e métodos de negócio. A fonte PlantUML pode ser importada no Astah e salva como `FiapRide.asta` na raiz do projeto.
 
 ## Boas práticas
 
 - Métodos de negócio têm nomes de ação e uma responsabilidade clara.
-- Os atributos são privados e o estado é alterado por comportamentos controlados.
+- Setters não são públicos e validam as regras de negócio sob responsabilidade da classe.
+- Atributos imutáveis não possuem setters desnecessários.
 - Arquivos compilados e configurações locais são ignorados pelo [`.gitignore`](.gitignore).
