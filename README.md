@@ -1,6 +1,6 @@
 # FiapRide - Sistema de Mobilidade Urbana
 
-Projeto incremental da disciplina de Programação Orientada a Objetos. O FiapRide modela passageiros com carteira digital e celulares com armazenamento limitado.
+Projeto incremental da disciplina de Programação Orientada a Objetos. O FiapRide modela passageiros com carteira digital, celulares com armazenamento limitado e veículos da frota com combustível protegido por encapsulamento.
 
 ## Estrutura
 
@@ -9,9 +9,29 @@ src/br/com/fiapride/
 ├── main/SistemaPrincipal.java
 └── model/
     ├── Celular.java
-    └── Passageiro.java
+    ├── Passageiro.java
+    └── Veiculo.java
 docs/uml.md
 ```
+
+## Classe `Veiculo`
+
+Representa um veículo da frota e protege seu estado interno.
+
+### Atributos
+
+- `proprietario`: nome do responsável pelo veículo.
+- `placa`: identificação do veículo.
+- `combustivel`: quantidade disponível em litros.
+
+Os três atributos são privados. O proprietário e a placa são definidos no construtor, e o combustível só é alterado pelos métodos de comportamento.
+
+### Métodos
+
+- `abastecer(double litros)`: adiciona apenas uma quantidade positiva e finita.
+- `consumir(double litros)`: consome apenas uma quantidade válida e nunca permite combustível negativo.
+
+Tentativas inválidas geram `IllegalArgumentException`, mantendo o objeto em um estado consistente.
 
 ## Classe `Passageiro`
 
@@ -59,11 +79,11 @@ javac -encoding UTF-8 -d out $fontes
 java -cp out br.com.fiapride.main.SistemaPrincipal
 ```
 
-O programa demonstra cenários válidos e inválidos para as duas classes, incluindo recarga, pagamento, instalação de aplicativo e liberação de memória.
+O programa demonstra cenários válidos e inválidos para as três classes, incluindo recarga, pagamento, instalação de aplicativo, liberação de memória, abastecimento e consumo de combustível.
 
 ## UML
 
-O diagrama de classes atualizado está em [docs/uml.md](docs/uml.md). Ele registra os atributos, construtores e os comportamentos implementados no projeto.
+O diagrama de classes atualizado está em [docs/uml.md](docs/uml.md), e a imagem usada na entrega está em `diagrama-veiculo-refatorado.png`. O diagrama registra os atributos, construtores e comportamentos implementados no projeto.
 
 ## Boas práticas
 

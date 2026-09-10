@@ -26,6 +26,19 @@ classDiagram
         +int getMemoriaTotal()
         +int getMemoria()
     }
+
+    class Veiculo {
+        -String proprietario
+        -String placa
+        -double combustivel
+        +Veiculo(String proprietario, String placa)
+        +Veiculo(String proprietario, String placa, double combustivelInicial)
+        +void abastecer(double litros)
+        +void consumir(double litros)
+        +String getProprietario()
+        +String getPlaca()
+        +double getCombustivel()
+    }
 ```
 
-Os métodos de negócio aparecem na terceira divisão de cada classe e são responsáveis por alterar o estado somente após validar as regras correspondentes.
+Os métodos de negócio aparecem na terceira divisão de cada classe e são responsáveis por alterar o estado somente após validar as regras correspondentes. Em `Veiculo`, os atributos são privados e não existem setters públicos: as alterações passam por `abastecer` e `consumir`, que impedem valores inválidos e combustível negativo.

@@ -2,11 +2,13 @@ package br.com.fiapride.main;
 
 import br.com.fiapride.model.Celular;
 import br.com.fiapride.model.Passageiro;
+import br.com.fiapride.model.Veiculo;
 
 public class SistemaPrincipal {
     public static void main(String[] args) {
         testarPassageiros();
         testarCelular();
+        testarVeiculo();
     }
 
     private static void testarPassageiros() {
@@ -56,5 +58,31 @@ public class SistemaPrincipal {
         celular.esvaziarMemoria(100); // Cenário inválido
 
         System.out.println("Memória final: " + celular.getMemoria() + "GB de " + celular.getMemoriaTotal() + "GB");
+    }
+
+    private static void testarVeiculo() {
+        System.out.println("=== Testes da classe Veiculo ===");
+
+        Veiculo veiculo = new Veiculo("Carlos", "ABC-1234");
+        System.out.println("Dono: " + veiculo.getProprietario()
+                + " | Placa: " + veiculo.getPlaca()
+                + " | Combustivel: " + veiculo.getCombustivel() + "L");
+
+        veiculo.abastecer(50);
+        System.out.println("Apos abastecer 50L: " + veiculo.getCombustivel() + "L");
+
+        try {
+            veiculo.consumir(100);
+        } catch (IllegalArgumentException erro) {
+            System.out.println("Consumo rejeitado: " + erro.getMessage());
+        }
+
+        try {
+            veiculo.abastecer(-10);
+        } catch (IllegalArgumentException erro) {
+            System.out.println("Abastecimento rejeitado: " + erro.getMessage());
+        }
+
+        System.out.println("Combustivel final: " + veiculo.getCombustivel() + "L");
     }
 }
