@@ -1,47 +1,82 @@
 package br.com.fiapride.model;
 
+/**
+ * Representa um celular com capacidade limitada de armazenamento.
+ */
 public class Celular {
-    // 1. ATRIBUTOS
-    public String cor;
-    public int memoria; // Armazenamento livre em GB
+    private final String cor;
+    private final int memoriaTotal;
+    private int memoria;
 
-    // 2. CONSTRUTOR (Inicializa o estado do objeto com valores iniciais seguros)
-    public Celular(String cor, int memoria) {
-        this.cor = cor;
-        this.memoria = memoria;
+    /**
+     * Cria um celular iniciando com toda a memória livre.
+     */
+    public Celular(String cor, int memoriaTotal) {
+        this(cor, memoriaTotal, memoriaTotal);
     }
 
-    // 3. MÉTODOS DE COMPORTAMENTO (As ações que alteram o estado do objeto)
-    
-    // Comportamento 1: Consome memória interna livre para instalar apps
+    /**
+     * Cria um celular com capacidade total e memória livre iniciais.
+     */
+    public Celular(String cor, int memoriaTotal, int memoriaInicial) {
+        if (cor == null || cor.isBlank()) {
+            throw new IllegalArgumentException("A cor do celular é obrigatória.");
+        }
+        if (memoriaTotal <= 0) {
+            throw new IllegalArgumentException("A memória total deve ser maior que zero.");
+        }
+        if (memoriaInicial < 0 || memoriaInicial > memoriaTotal) {
+            throw new IllegalArgumentException("A memória inicial deve estar entre zero e a memória total.");
+        }
+
+        this.cor = cor;
+        this.memoriaTotal = memoriaTotal;
+        this.memoria = memoriaInicial;
+    }
+
+    /**
+     * Consome memória livre para instalar um aplicativo.
+     */
     public void instalarAplicativo(int tamanhoGb) {
-        // Regra de negócio: O tamanho do app deve ser válido (positivo)
         if (tamanhoGb <= 0) {
             System.out.println("Erro: Tamanho do aplicativo deve ser maior que zero.");
-            return; // Interrompe a execução do método
+            return;
         }
-        
-        // Regra de negócio: Não podemos instalar se não houver espaço suficiente
         if (this.memoria < tamanhoGb) {
             System.out.println("Erro: Espaço insuficiente na memória para instalar o aplicativo.");
             return;
         }
-        
-        // Altera o estado do atributo
+
         this.memoria -= tamanhoGb;
         System.out.println("Aplicativo instalado com sucesso! Espaço livre atual: " + this.memoria + "GB.");
     }
 
-    // Comportamento 2: Libera espaço na memória interna desinstalando arquivos
+    /**
+     * Libera memória sem ultrapassar a capacidade física do celular.
+     */
     public void esvaziarMemoria(int quantidadeLiberada) {
-        // Regra de negócio: A quantidade a ser limpa deve ser positiva
         if (quantidadeLiberada <= 0) {
             System.out.println("Erro: A quantidade de memória para liberação deve ser maior que zero.");
             return;
         }
-        
-        // Altera o estado do atributo
+        if (quantidadeLiberada > this.memoriaTotal - this.memoria) {
+            System.out.println("Erro: A memória livre não pode ultrapassar a capacidade total do celular.");
+            return;
+        }
+
         this.memoria += quantidadeLiberada;
         System.out.println("Limpeza concluída! Novo espaço livre disponível: " + this.memoria + "GB.");
+    }
+
+    public String getCor() {
+        return cor;
+    }
+
+    public int getMemoriaTotal() {
+        return memoriaTotal;
+    }
+
+    public int getMemoria() {
+        return memoria;
     }
 }

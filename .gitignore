@@ -10,3 +10,4 @@
 # Ignorar pastas de build e dependências locais
 bin/
 target/
+out/
