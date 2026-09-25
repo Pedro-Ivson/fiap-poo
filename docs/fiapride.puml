@@ -16,16 +16,6 @@ class Passageiro {
     - void setSaldo(double valor)
 }
 
-class Viagem {
-    - String destino
-    - double valor
-    + Viagem(String destino, Passageiro solicitante, Veiculo veiculoUtilizado)
-    + void exibirResumo()
-    + String getDestino()
-    + Passageiro getSolicitante()
-    + Veiculo getVeiculoUtilizado()
-}
-
 class Veiculo {
     - String placa
     - String modelo
@@ -34,6 +24,29 @@ class Veiculo {
     + String getPlaca()
     + String getModelo()
     - void setPlaca(String novaPlaca)
+}
+
+class Carro {
+    - int capacidadePassageiros
+    + Carro(String placa, String modelo, int capacidadePassageiros)
+    + int getCapacidadePassageiros()
+    - void setCapacidadePassageiros(int capacidadePassageiros)
+}
+
+class Moto {
+    - boolean isEletrica
+    + Moto(String placa, String modelo, boolean isEletrica)
+    + boolean isEletrica()
+}
+
+class Viagem {
+    - String destino
+    - double valor
+    + Viagem(String destino, Passageiro solicitante, Veiculo veiculoUtilizado)
+    + void exibirResumo()
+    + String getDestino()
+    + Passageiro getSolicitante()
+    + Veiculo getVeiculoUtilizado()
 }
 
 class Celular {
@@ -51,12 +64,28 @@ class Celular {
     - void setMemoria(int valor)
 }
 
+class Android {
+    - String versaoAndroid
+    + Android(String cor, int memoriaTotal, int memoriaInicial, Bateria bateria, String versaoAndroid)
+    + String getVersaoAndroid()
+}
+
+class Iphone {
+    - boolean faceIdAtivo
+    + Iphone(String cor, int memoriaTotal, int memoriaInicial, Bateria bateria, boolean faceIdAtivo)
+    + boolean isFaceIdAtivo()
+}
+
 class Bateria {
     - int capacidadeMah
     + Bateria(int capacidadeMah)
     + int getCapacidadeMah()
 }
 
+Carro --|> Veiculo
+Moto --|> Veiculo
+Android --|> Celular
+Iphone --|> Celular
 Viagem "0..*" --> "1" Passageiro : solicitante
 Viagem "0..*" --> "1" Veiculo : veiculoUtilizado
 Celular "1" --> "1" Bateria : bateria

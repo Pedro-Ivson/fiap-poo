@@ -1,8 +1,9 @@
 package br.com.fiapride.main;
 
+import br.com.fiapride.model.Carro;
+import br.com.fiapride.model.Moto;
 import br.com.fiapride.model.Passageiro;
 import br.com.fiapride.model.Viagem;
-import br.com.fiapride.model.Veiculo;
 
 /**
  * Executável principal do FiapRide.
@@ -14,11 +15,21 @@ public class SistemaPrincipal {
         Passageiro ana = new Passageiro("Ana Silva", "222.222.222-22");
         Passageiro carlos = new Passageiro("Carlos Souza", "333.333.333-33");
 
-        System.out.println("--- Cadastro do veículo ---");
-        Veiculo carroDoJoao = new Veiculo("ABC-1234", "Toyota Corolla");
+        System.out.println("--- FIAPRIDE: Teste de frota ---");
+        Carro uberX = new Carro("ABC-1234", "Toyota Corolla", 4);
+        Moto mottu = new Moto("ABC-9999", "Caloi City", true);
+
+        System.out.println("Carro modelo: " + uberX.getModelo()
+                + " | Placa: " + uberX.getPlaca());
+        System.out.println("Vagas para passageiros: " + uberX.getCapacidadePassageiros());
+        System.out.println("\nMoto modelo: " + mottu.getModelo()
+                + " | Placa: " + mottu.getPlaca());
+        if (mottu.isEletrica()) {
+            System.out.println("Atenção: esta moto é elétrica.");
+        }
 
         System.out.println("\n--- Solicitação da viagem ---");
-        Viagem viagemDaAna = new Viagem("Avenida Paulista, 1000", ana, carroDoJoao);
+        Viagem viagemDaAna = new Viagem("Avenida Paulista, 1000", ana, uberX);
         viagemDaAna.exibirResumo();
 
         System.out.println("\n--- Prova de passagem por referência ---");
@@ -47,13 +58,13 @@ public class SistemaPrincipal {
         System.out.println("\nTentando recarregar com valor negativo:");
         ana.adicionarSaldo(-500.0);
 
-        System.out.println("\n--- Atualização do veículo ---");
-        System.out.println("Veículo: " + carroDoJoao.getModelo()
-                + " | Placa: " + carroDoJoao.getPlaca());
-        carroDoJoao.atualizarPlaca("DEF-5678");
+        System.out.println("\n--- Atualização do veículo herdada por Carro ---");
+        System.out.println("Veículo: " + uberX.getModelo()
+                + " | Placa: " + uberX.getPlaca());
+        uberX.atualizarPlaca("DEF-5678");
 
-        // ERRO DE COMPILAÇÃO: não existe construtor sem os dados obrigatórios.
-        // Veiculo carroFantasma = new Veiculo();
+        // ERRO DE COMPILAÇÃO: o construtor da subclasse também exige os dados do veículo.
+        // Carro carroFantasma = new Carro();
 
         // Esta linha não compila e demonstra que o atributo está protegido:
         // ana.saldo = -500.0;

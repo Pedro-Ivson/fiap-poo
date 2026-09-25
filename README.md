@@ -2,7 +2,7 @@
 
 Projeto incremental da disciplina de Programação Orientada a Objetos. O
 FiapRide representa passageiros, veículos e viagens. O projeto pessoal usa
-`Celular` e `Bateria` para demonstrar outra associação entre objetos.
+`Celular`, `Android`, `Iphone` e `Bateria` para demonstrar associação e herança.
 
 ## Estrutura
 
@@ -13,8 +13,12 @@ src/br/com/fiapride/
 │   ├── TesteCelular.java
 │   └── TesteVeiculo.java
 └── model/
+    ├── Android.java
     ├── Bateria.java
+    ├── Carro.java
     ├── Celular.java
+    ├── Iphone.java
+    ├── Moto.java
     ├── Passageiro.java
     ├── Veiculo.java
     └── Viagem.java
@@ -23,7 +27,7 @@ docs/
 └── uml.md
 ```
 
-## Relacionamentos da Aula 5
+## Aula 5: relacionamentos entre objetos
 
 Uma `Viagem` recebe e mantém referências para o objeto `Passageiro` que a
 solicitou e para o `Veiculo` que será utilizado. O resumo consulta os dados
@@ -32,54 +36,45 @@ a viagem é criada e consultado pela chamada
 `viagemDaAna.getSolicitante().getSaldo()`, demonstrando que a viagem conhece o
 mesmo objeto `Passageiro`.
 
-Os campos de associação usam os nomes de papel do PDF: `solicitante` e
-`veiculoUtilizado`. O destino é obrigatório; o valor começa em `0.0`, conforme
-o exercício, e não há cobrança automática nesta etapa.
+Os papéis das associações são `solicitante` e `veiculoUtilizado`. O destino é
+obrigatório; o valor começa em `0.0`, conforme o exercício, e não há cobrança
+automática nesta etapa. No projeto pessoal, `Celular` recebe uma `Bateria` no
+construtor e o programa exibe a capacidade em mAh.
 
-No projeto pessoal, `Celular` recebe um objeto `Bateria` em seu construtor e
-expõe a capacidade por `getBateria()`. `TesteCelular` mostra a capacidade em
-mAh junto aos dados do celular.
+## Aula 6: herança
+
+`Carro` e `Moto` estendem `Veiculo`, pois cada um é um tipo de veículo. Os
+construtores das subclasses chamam `super(placa, modelo)`, deixando a
+superclasse validar e inicializar os dados comuns. `Carro` adiciona
+`capacidadePassageiros`; `Moto` adiciona `isEletrica`. O `SistemaPrincipal`
+usa os getters herdados de modelo e placa, além dos atributos próprios de cada
+subclasse.
+
+Para o projeto pessoal, `Android` e `Iphone` estendem `Celular`. A primeira
+classe adiciona `versaoAndroid`; a segunda adiciona `faceIdAtivo`. Ambas chamam
+o construtor da superclasse e herdam as regras de memória e a associação com
+`Bateria`. `TesteCelular` demonstra os dados herdados e específicos.
+
+Herança é adequada quando a relação é “é um”: carro é um veículo e Android é
+um celular. Para representar algo que outro objeto tem, como um celular que
+tem uma bateria, permanece a associação da Aula 5.
 
 ## Encapsulamento
 
-Todos os atributos de modelo são privados. Os getters públicos permitem
-leitura controlada, enquanto os setters privados são usados somente pela
-própria classe.
-
-### `Passageiro`
-
-- `nome` e `cpf` são obrigatórios na construção.
-- `saldo` muda por `adicionarSaldo` e `pagarViagem`.
-- Recargas e pagamentos são validados antes de alterar o saldo.
-
-### `Viagem`
-
-- O construtor exige destino, passageiro solicitante e veículo utilizado.
-- `exibirResumo()` lê o nome do passageiro e os dados do veículo pelas
-  referências associadas.
-- `getSolicitante()` e `getVeiculoUtilizado()` permitem consultar os objetos
-  relacionados.
-
-### `Veiculo`
-
-- `placa` e `modelo` são obrigatórios no construtor.
-- `modelo` é imutável depois da construção.
-- `placa` só muda por `atualizarPlaca`, que valida a nova placa.
-
-### `Celular` e `Bateria`
-
-- `Celular` exige um objeto `Bateria` no construtor.
-- A bateria guarda uma capacidade positiva em mAh.
-- A memória livre do celular é alterada pelas operações de instalar e remover
-  aplicativos, respeitando a capacidade total.
+Os atributos do modelo são privados. Uma subclasse não acessa diretamente os
+atributos privados da superclasse; ela inicializa o estado comum por
+`super(...)` e usa as operações públicas herdadas. Por isso `Carro` não pode
+alterar `placa` diretamente. O setter `setPlaca` também é privado; depois da
+construção, a placa só pode ser atualizada pela operação pública herdada
+`atualizarPlaca`, que aplica a validação da classe `Veiculo`.
 
 ## Executáveis de demonstração
 
-- `SistemaPrincipal`: cria uma viagem, exibe o resumo e demonstra a referência
-  compartilhada com o passageiro.
-- `TesteCelular`: demonstra a associação entre celular e bateria e as regras de
-  memória.
-- `TesteVeiculo`: demonstra a criação do veículo e a atualização válida e
+- `SistemaPrincipal`: demonstra `Carro` e `Moto`, getters herdados e o uso de
+  um `Carro` como veículo de uma viagem.
+- `TesteCelular`: demonstra a associação com `Bateria` e as subclasses
+  `Android` e `Iphone`.
+- `TesteVeiculo`: demonstra a criação de `Veiculo` e a atualização válida e
   inválida da placa.
 
 No PowerShell:
@@ -99,16 +94,12 @@ PlantUML editável em [`docs/fiapride.puml`](docs/fiapride.puml). A imagem
 `diagrama-veiculo-refatorado.png` continua ilustrando a refatoração do veículo
 da Aula 4.
 
-## Reflexão da Aula 5
+## Reflexão da Aula 6
 
-Passar o objeto `Passageiro` inteiro para `Viagem` mantém acesso aos dados e às
-operações de negócio da mesma pessoa. Passar apenas um `String` com o nome
-serviria para exibir o resumo, mas não permitiria consultar o saldo atualizado
-nem chamar uma operação como `pagarViagem`. A associação também evita que a
-viagem trabalhe com uma cópia desatualizada do nome ou do estado financeiro.
-
-## Aula 4
-
-O veículo não possui setter público: a placa só pode ser atualizada por
-`atualizarPlaca`, que valida o valor, e o modelo não muda depois da criação.
-Isso impede alterações diretas que deixariam o objeto em um estado inválido.
+Manter `placa` e `modelo` privados protege o encapsulamento e as regras de
+validação da classe `Veiculo`, trabalhadas nas aulas anteriores. Se uma
+subclasse pudesse alterar esses campos diretamente, poderia deixar o veículo
+em um estado inválido ou contornar a lógica da classe mãe.
+`super(placa, modelo)` pede à superclasse que inicialize os dados; `setPlaca` não pode ser
+chamado pela filha por também ser privado. Uma atualização posterior usa
+`atualizarPlaca`, a operação pública que preserva a validação.

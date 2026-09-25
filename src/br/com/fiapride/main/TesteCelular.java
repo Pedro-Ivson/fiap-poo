@@ -1,7 +1,9 @@
 package br.com.fiapride.main;
 
+import br.com.fiapride.model.Android;
 import br.com.fiapride.model.Bateria;
 import br.com.fiapride.model.Celular;
+import br.com.fiapride.model.Iphone;
 
 /**
  * Executável separado para testar o objeto pessoal Celular.
@@ -15,6 +17,16 @@ public class TesteCelular {
         System.out.println("Cor: " + celular.getCor()
                 + " | Memória livre: " + celular.getMemoria() + "GB"
                 + " | Bateria: " + celular.getBateria().getCapacidadeMah() + "mAh");
+
+        Android android = new Android("Azul", 256, 200, new Bateria(5000), "15");
+        Iphone iphone = new Iphone("Prata", 512, 400, new Bateria(4500), true);
+        System.out.println("\n--- Especializações de Celular ---");
+        System.out.println("Android: cor " + android.getCor()
+                + " | Memória livre: " + android.getMemoria() + "GB"
+                + " | Versão: " + android.getVersaoAndroid());
+        System.out.println("iPhone: cor " + iphone.getCor()
+                + " | Memória livre: " + iphone.getMemoria() + "GB"
+                + " | Face ID ativo: " + iphone.isFaceIdAtivo());
 
         celular.instalarAplicativo(10); // Cenário válido
 
