@@ -1,6 +1,8 @@
 # FiapRide - Sistema de Mobilidade Urbana
 
-Projeto incremental da disciplina de Programação Orientada a Objetos. O FiapRide modela passageiros com carteira digital, celulares com armazenamento limitado e veículos da frota com estado protegido por encapsulamento.
+Projeto incremental da disciplina de Programação Orientada a Objetos. O
+FiapRide representa passageiros, veículos e viagens. O projeto pessoal usa
+`Celular` e `Bateria` para demonstrar outra associação entre objetos.
 
 ## Estrutura
 
@@ -11,50 +13,74 @@ src/br/com/fiapride/
 │   ├── TesteCelular.java
 │   └── TesteVeiculo.java
 └── model/
+    ├── Bateria.java
     ├── Celular.java
     ├── Passageiro.java
-    └── Veiculo.java
+    ├── Veiculo.java
+    └── Viagem.java
 docs/
 ├── fiapride.puml
 └── uml.md
 ```
 
+## Relacionamentos da Aula 5
+
+Uma `Viagem` recebe e mantém referências para o objeto `Passageiro` que a
+solicitou e para o `Veiculo` que será utilizado. O resumo consulta os dados
+atuais desses objetos. No exemplo principal, o saldo é recarregado depois que
+a viagem é criada e consultado pela chamada
+`viagemDaAna.getSolicitante().getSaldo()`, demonstrando que a viagem conhece o
+mesmo objeto `Passageiro`.
+
+Os campos de associação usam os nomes de papel do PDF: `solicitante` e
+`veiculoUtilizado`. O destino é obrigatório; o valor começa em `0.0`, conforme
+o exercício, e não há cobrança automática nesta etapa.
+
+No projeto pessoal, `Celular` recebe um objeto `Bateria` em seu construtor e
+expõe a capacidade por `getBateria()`. `TesteCelular` mostra a capacidade em
+mAh junto aos dados do celular.
+
 ## Encapsulamento
 
-Todos os atributos de modelo são `private`. Os getters públicos permitem leitura controlada, enquanto os setters são privados e só podem ser usados pela própria classe. Assim, classes externas não conseguem alterar diretamente o estado dos objetos.
+Todos os atributos de modelo são privados. Os getters públicos permitem
+leitura controlada, enquanto os setters privados são usados somente pela
+própria classe.
 
-### Classe `Passageiro`
+### `Passageiro`
 
-Representa uma pessoa que utiliza o FiapRide.
+- `nome` e `cpf` são obrigatórios na construção.
+- `saldo` muda por `adicionarSaldo` e `pagarViagem`.
+- Recargas e pagamentos são validados antes de alterar o saldo.
 
-- `nome` e `cpf`: definidos na construção e protegidos por setters privados.
-- `saldo`: alterado somente por `adicionarSaldo` e `pagarViagem`.
-- `getNome()`, `getCpf()` e `getSaldo()`: getters públicos.
-- `setNome`, `setCpf` e `setSaldo`: setters privados; `setSaldo` bloqueia valores negativos ou não finitos.
-- `adicionarSaldo(double valor)`: aceita somente recargas positivas.
-- `pagarViagem(double custo)`: aceita somente custos positivos e saldo suficiente.
+### `Viagem`
 
-### Classe `Celular`
+- O construtor exige destino, passageiro solicitante e veículo utilizado.
+- `exibirResumo()` lê o nome do passageiro e os dados do veículo pelas
+  referências associadas.
+- `getSolicitante()` e `getVeiculoUtilizado()` permitem consultar os objetos
+  relacionados.
 
-Representa um celular e o controle de seu armazenamento.
+### `Veiculo`
 
-- `cor`: protegida por setter privado.
-- `memoriaTotal`: definida na construção e sem setter, pois a capacidade física não muda.
-- `memoria`: alterada por `instalarAplicativo` e `esvaziarMemoria`, usando setter privado que mantém o valor entre zero e `memoriaTotal`.
+- `placa` e `modelo` são obrigatórios no construtor.
+- `modelo` é imutável depois da construção.
+- `placa` só muda por `atualizarPlaca`, que valida a nova placa.
 
-### Classe `Veiculo`
+### `Celular` e `Bateria`
 
-Representa um veículo da frota.
+- `Celular` exige um objeto `Bateria` no construtor.
+- A bateria guarda uma capacidade positiva em mAh.
+- A memória livre do celular é alterada pelas operações de instalar e remover
+  aplicativos, respeitando a capacidade total.
 
-- `proprietario` e `placa`: definidos na construção e sem setters, pois identificam o veículo.
-- `combustivel`: alterado apenas por `abastecer` e `consumir`, através de setter privado que impede valores negativos ou inválidos.
-- `getProprietario()`, `getPlaca()` e `getCombustivel()`: getters públicos.
+## Executáveis de demonstração
 
-## Executáveis e testes
-
-- `SistemaPrincipal`: testa exclusivamente o fluxo do FiapRide com `Passageiro`.
-- `TesteCelular`: testa o objeto pessoal `Celular`, incluindo tentativas inválidas.
-- `TesteVeiculo`: testa o objeto pessoal `Veiculo`, incluindo abastecimento e consumo inválidos.
+- `SistemaPrincipal`: cria uma viagem, exibe o resumo e demonstra a referência
+  compartilhada com o passageiro.
+- `TesteCelular`: demonstra a associação entre celular e bateria e as regras de
+  memória.
+- `TesteVeiculo`: demonstra a criação do veículo e a atualização válida e
+  inválida da placa.
 
 No PowerShell:
 
@@ -66,15 +92,23 @@ java -cp out br.com.fiapride.main.TesteCelular
 java -cp out br.com.fiapride.main.TesteVeiculo
 ```
 
-As linhas comentadas de atribuição direta nos executáveis mostram exemplos que deixariam de compilar, comprovando a proteção dos atributos.
-
 ## UML
 
-O diagrama atualizado está em [docs/uml.md](docs/uml.md), com fonte editável em [docs/fiapride.puml](docs/fiapride.puml), e a imagem do módulo de veículos em `diagrama-veiculo-refatorado.png`. O diagrama registra os atributos privados, getters públicos, setters privados e métodos de negócio. A fonte PlantUML pode ser importada no Astah e salva como `FiapRide.asta` na raiz do projeto.
+O diagrama de classes está em [`docs/uml.md`](docs/uml.md) e sua fonte
+PlantUML editável em [`docs/fiapride.puml`](docs/fiapride.puml). A imagem
+`diagrama-veiculo-refatorado.png` continua ilustrando a refatoração do veículo
+da Aula 4.
 
-## Boas práticas
+## Reflexão da Aula 5
 
-- Métodos de negócio têm nomes de ação e uma responsabilidade clara.
-- Setters não são públicos e validam as regras de negócio sob responsabilidade da classe.
-- Atributos imutáveis não possuem setters desnecessários.
-- Arquivos compilados e configurações locais são ignorados pelo [`.gitignore`](.gitignore).
+Passar o objeto `Passageiro` inteiro para `Viagem` mantém acesso aos dados e às
+operações de negócio da mesma pessoa. Passar apenas um `String` com o nome
+serviria para exibir o resumo, mas não permitiria consultar o saldo atualizado
+nem chamar uma operação como `pagarViagem`. A associação também evita que a
+viagem trabalhe com uma cópia desatualizada do nome ou do estado financeiro.
+
+## Aula 4
+
+O veículo não possui setter público: a placa só pode ser atualizada por
+`atualizarPlaca`, que valida o valor, e o modelo não muda depois da criação.
+Isso impede alterações diretas que deixariam o objeto em um estado inválido.

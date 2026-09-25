@@ -1,88 +1,56 @@
 package br.com.fiapride.model;
 
 /**
- * Representa um veiculo da frota e controla seu nivel de combustivel.
+ * Representa um veículo do FiapRide com dados obrigatórios na construção.
  */
 public class Veiculo {
-    private final String proprietario;
-    private final String placa;
-    private double combustivel;
+    private String placa;
+    private final String modelo;
 
     /**
-     * Cria um veiculo sem combustivel.
+     * Cria um veículo com placa válida e modelo definido.
      */
-    public Veiculo(String proprietario, String placa) {
-        this(proprietario, placa, 0.0);
-    }
-
-    /**
-     * Cria um veiculo com um nivel inicial de combustivel valido.
-     */
-    public Veiculo(String proprietario, String placa, double combustivelInicial) {
-        validarTexto(proprietario, "O proprietario e obrigatorio.");
-        validarTexto(placa, "A placa e obrigatoria.");
-        validarCombustivel(combustivelInicial);
-
-        this.proprietario = proprietario;
-        this.placa = placa;
-        setCombustivel(combustivelInicial);
-    }
-
-    /**
-     * Adiciona combustivel ao veiculo.
-     */
-    public void abastecer(double litros) {
-        validarQuantidade(litros);
-        setCombustivel(this.combustivel + litros);
-    }
-
-    /**
-     * Consome combustivel sem permitir que o nivel fique negativo.
-     */
-    public void consumir(double litros) {
-        validarQuantidade(litros);
-        if (litros > this.combustivel) {
-            throw new IllegalArgumentException("Combustivel insuficiente para o consumo solicitado.");
+    public Veiculo(String placa, String modelo) {
+        if (modelo == null || modelo.isBlank()) {
+            throw new IllegalArgumentException("O modelo é obrigatório.");
         }
 
-        setCombustivel(this.combustivel - litros);
-    }
-
-    public String getProprietario() {
-        return proprietario;
+        this.setPlaca(placa);
+        this.modelo = modelo.trim();
+        System.out.println("Registro inicial: Um " + this.modelo
+                + " nasceu com a placa " + this.placa);
     }
 
     public String getPlaca() {
-        return placa;
+        return this.placa;
     }
 
-    public double getCombustivel() {
-        return combustivel;
+    public String getModelo() {
+        return this.modelo;
     }
 
     /**
-     * Setter privado que impede que o combustível fique negativo ou inválido.
+     * Atualiza a placa através da operação de negócio do veículo.
      */
-    private void setCombustivel(double valor) {
-        validarCombustivel(valor);
-        this.combustivel = valor;
-    }
-
-    private static void validarTexto(String valor, String mensagem) {
-        if (valor == null || valor.isBlank()) {
-            throw new IllegalArgumentException(mensagem);
+    public void atualizarPlaca(String novaPlaca) {
+        System.out.println("Solicitada atualização de placa no Detran para o veículo "
+                + this.modelo + "...");
+        try {
+            this.setPlaca(novaPlaca);
+            System.out.println("Sucesso: A placa agora é " + this.placa);
+        } catch (IllegalArgumentException erro) {
+            System.out.println("Erro de Validação: " + erro.getMessage());
         }
     }
 
-    private static void validarCombustivel(double valor) {
-        if (!Double.isFinite(valor) || valor < 0) {
-            throw new IllegalArgumentException("O combustivel deve ser um valor finito e nao negativo.");
+    /**
+     * Único ponto interno que pode alterar a placa.
+     */
+    private void setPlaca(String novaPlaca) {
+        if (novaPlaca == null || novaPlaca.isBlank()) {
+            throw new IllegalArgumentException("A placa informada é inválida.");
         }
-    }
 
-    private static void validarQuantidade(double litros) {
-        if (!Double.isFinite(litros) || litros <= 0) {
-            throw new IllegalArgumentException("A quantidade deve ser um valor finito e maior que zero.");
-        }
+        this.placa = novaPlaca.trim();
     }
 }

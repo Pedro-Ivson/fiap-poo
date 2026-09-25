@@ -7,23 +7,21 @@ public class Celular {
     private String cor;
     private final int memoriaTotal;
     private int memoria;
+    private final Bateria bateria;
 
     /**
-     * Cria um celular iniciando com toda a memória livre.
+     * Cria um celular com memória e bateria definidas.
      */
-    public Celular(String cor, int memoriaTotal) {
-        this(cor, memoriaTotal, memoriaTotal);
-    }
-
-    /**
-     * Cria um celular com capacidade total e memória livre iniciais.
-     */
-    public Celular(String cor, int memoriaTotal, int memoriaInicial) {
+    public Celular(String cor, int memoriaTotal, int memoriaInicial, Bateria bateria) {
         if (memoriaTotal <= 0) {
             throw new IllegalArgumentException("A memória total deve ser maior que zero.");
         }
+        if (bateria == null) {
+            throw new IllegalArgumentException("A bateria do celular é obrigatória.");
+        }
 
         this.memoriaTotal = memoriaTotal;
+        this.bateria = bateria;
         setCor(cor);
         setMemoria(memoriaInicial);
     }
@@ -72,6 +70,10 @@ public class Celular {
 
     public int getMemoria() {
         return memoria;
+    }
+
+    public Bateria getBateria() {
+        return bateria;
     }
 
     private void setCor(String cor) {

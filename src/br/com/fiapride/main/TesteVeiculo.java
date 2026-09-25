@@ -3,40 +3,22 @@ package br.com.fiapride.main;
 import br.com.fiapride.model.Veiculo;
 
 /**
- * Executável separado para testar o objeto pessoal Veiculo.
+ * Demonstra a criação de um veículo e a atualização validada da placa.
  */
 public class TesteVeiculo {
     public static void main(String[] args) {
-        System.out.println("--- Teste do objeto pessoal: Veiculo ---");
+        System.out.println("--- Teste do construtor de Veiculo ---");
 
-        Veiculo veiculo = new Veiculo("Carlos", "ABC-1234");
-        System.out.println("Proprietário: " + veiculo.getProprietario()
-                + " | Placa: " + veiculo.getPlaca()
-                + " | Combustível: " + veiculo.getCombustivel() + "L");
+        Veiculo meuCarro = new Veiculo("ABC-1234", "Toyota Corolla");
+        System.out.println("Modelo: " + meuCarro.getModelo()
+                + " | Placa: " + meuCarro.getPlaca());
 
-        veiculo.abastecer(50); // Cenário válido
+        meuCarro.atualizarPlaca("DEF-5678"); // Atualização válida
+        meuCarro.atualizarPlaca("   "); // Atualização inválida; mantém a placa anterior
 
-        try {
-            veiculo.consumir(20); // Cenário válido
-        } catch (IllegalArgumentException erro) {
-            System.out.println("Consumo rejeitado: " + erro.getMessage());
-        }
+        System.out.println("Placa final: " + meuCarro.getPlaca());
 
-        try {
-            veiculo.consumir(100); // Cenário inválido
-        } catch (IllegalArgumentException erro) {
-            System.out.println("Consumo rejeitado: " + erro.getMessage());
-        }
-
-        try {
-            veiculo.abastecer(-10); // Cenário inválido
-        } catch (IllegalArgumentException erro) {
-            System.out.println("Abastecimento rejeitado: " + erro.getMessage());
-        }
-
-        System.out.println("Combustível final: " + veiculo.getCombustivel() + "L");
-
-        // Esta linha não compila e demonstra que o combustível está protegido:
-        // veiculo.combustivel = -1;
+        // ERRO DE COMPILAÇÃO: o construtor exige placa e modelo.
+        // Veiculo carroFantasma = new Veiculo();
     }
 }

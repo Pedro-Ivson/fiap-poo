@@ -16,32 +16,48 @@ class Passageiro {
     - void setSaldo(double valor)
 }
 
+class Viagem {
+    - String destino
+    - double valor
+    + Viagem(String destino, Passageiro solicitante, Veiculo veiculoUtilizado)
+    + void exibirResumo()
+    + String getDestino()
+    + Passageiro getSolicitante()
+    + Veiculo getVeiculoUtilizado()
+}
+
+class Veiculo {
+    - String placa
+    - String modelo
+    + Veiculo(String placa, String modelo)
+    + void atualizarPlaca(String novaPlaca)
+    + String getPlaca()
+    + String getModelo()
+    - void setPlaca(String novaPlaca)
+}
+
 class Celular {
     - String cor
     - int memoriaTotal
     - int memoria
-    + Celular(String cor, int memoriaTotal)
-    + Celular(String cor, int memoriaTotal, int memoriaInicial)
+    + Celular(String cor, int memoriaTotal, int memoriaInicial, Bateria bateria)
     + void instalarAplicativo(int tamanhoGb)
     + void esvaziarMemoria(int quantidadeLiberada)
     + String getCor()
     + int getMemoriaTotal()
     + int getMemoria()
+    + Bateria getBateria()
     - void setCor(String cor)
     - void setMemoria(int valor)
 }
 
-class Veiculo {
-    - String proprietario
-    - String placa
-    - double combustivel
-    + Veiculo(String proprietario, String placa)
-    + Veiculo(String proprietario, String placa, double combustivelInicial)
-    + void abastecer(double litros)
-    + void consumir(double litros)
-    + String getProprietario()
-    + String getPlaca()
-    + double getCombustivel()
-    - void setCombustivel(double valor)
+class Bateria {
+    - int capacidadeMah
+    + Bateria(int capacidadeMah)
+    + int getCapacidadeMah()
 }
+
+Viagem "0..*" --> "1" Passageiro : solicitante
+Viagem "0..*" --> "1" Veiculo : veiculoUtilizado
+Celular "1" --> "1" Bateria : bateria
 @enduml

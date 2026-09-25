@@ -1,5 +1,6 @@
 package br.com.fiapride.main;
 
+import br.com.fiapride.model.Bateria;
 import br.com.fiapride.model.Celular;
 
 /**
@@ -9,9 +10,11 @@ public class TesteCelular {
     public static void main(String[] args) {
         System.out.println("--- Teste do objeto pessoal: Celular ---");
 
-        Celular celular = new Celular("Preto", 128, 64);
+        Bateria bateria = new Bateria(5000);
+        Celular celular = new Celular("Preto", 128, 64, bateria);
         System.out.println("Cor: " + celular.getCor()
-                + " | Memória livre: " + celular.getMemoria() + "GB");
+                + " | Memória livre: " + celular.getMemoria() + "GB"
+                + " | Bateria: " + celular.getBateria().getCapacidadeMah() + "mAh");
 
         celular.instalarAplicativo(10); // Cenário válido
 
@@ -27,7 +30,7 @@ public class TesteCelular {
         celular.esvaziarMemoria(100); // Cenário inválido
 
         try {
-            new Celular("Preto", 128, 200); // Regra do setter privado
+            new Celular("Preto", 128, 200, bateria); // Regra do setter privado
         } catch (IllegalArgumentException erro) {
             System.out.println("Memória inicial rejeitada: " + erro.getMessage());
         }

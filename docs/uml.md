@@ -1,5 +1,10 @@
 # UML do FiapRide
 
+O diagrama abaixo registra os relacionamentos pedidos na Aula 5. Cada `Viagem`
+tem um `Passageiro` solicitante e um `Veiculo` utilizado; os papéis aparecem
+com os nomes `solicitante` e `veiculoUtilizado`. O projeto pessoal também tem
+uma associação de `Celular` para `Bateria`, chamada `bateria`.
+
 ```mermaid
 classDiagram
     class Passageiro {
@@ -17,34 +22,56 @@ classDiagram
         -void setSaldo(double valor)
     }
 
+    class Viagem {
+        -String destino
+        -double valor
+        +Viagem(String destino, Passageiro solicitante, Veiculo veiculoUtilizado)
+        +void exibirResumo()
+        +String getDestino()
+        +Passageiro getSolicitante()
+        +Veiculo getVeiculoUtilizado()
+    }
+
+    class Veiculo {
+        -String placa
+        -String modelo
+        +Veiculo(String placa, String modelo)
+        +void atualizarPlaca(String novaPlaca)
+        +String getPlaca()
+        +String getModelo()
+        -void setPlaca(String novaPlaca)
+    }
+
     class Celular {
         -String cor
         -int memoriaTotal
         -int memoria
-        +Celular(String cor, int memoriaTotal)
-        +Celular(String cor, int memoriaTotal, int memoriaInicial)
+        +Celular(String cor, int memoriaTotal, int memoriaInicial, Bateria bateria)
         +void instalarAplicativo(int tamanhoGb)
         +void esvaziarMemoria(int quantidadeLiberada)
         +String getCor()
         +int getMemoriaTotal()
         +int getMemoria()
+        +Bateria getBateria()
         -void setCor(String cor)
         -void setMemoria(int valor)
     }
 
-    class Veiculo {
-        -String proprietario
-        -String placa
-        -double combustivel
-        +Veiculo(String proprietario, String placa)
-        +Veiculo(String proprietario, String placa, double combustivelInicial)
-        +void abastecer(double litros)
-        +void consumir(double litros)
-        +String getProprietario()
-        +String getPlaca()
-        +double getCombustivel()
-        -void setCombustivel(double valor)
+    class Bateria {
+        -int capacidadeMah
+        +Bateria(int capacidadeMah)
+        +int getCapacidadeMah()
     }
+
+    Viagem "0..*" --> "1" Passageiro : solicitante
+    Viagem "0..*" --> "1" Veiculo : veiculoUtilizado
+    Celular "1" --> "1" Bateria : bateria
 ```
 
-Os métodos de negócio aparecem na terceira divisão de cada classe e alteram o estado somente após validar as regras correspondentes. Os getters são públicos para leitura controlada, enquanto os setters são privados para impedir alterações diretas externas. `memoriaTotal`, `proprietario` e `placa` não possuem setters porque não devem mudar depois da construção.
+As linhas de associação representam as referências privadas mantidas pelos
+objetos. Por isso, `solicitante`, `veiculoUtilizado` e `bateria` aparecem como
+papéis das relações, sem repetir esses campos na lista de atributos UML.
+`getDestino()` retorna `String`, como esperado de um getter para o destino.
+
+O diagrama também está disponível em PlantUML em
+[`fiapride.puml`](fiapride.puml).
