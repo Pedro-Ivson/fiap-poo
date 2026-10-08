@@ -76,6 +76,13 @@ public class Celular {
         return bateria;
     }
 
+    /**
+     * Descreve de forma genérica os recursos de segurança de um celular.
+     */
+    public String descreverSeguranca() {
+        return "Celular: bloqueio de tela configurado pelo usuário.";
+    }
+
     private void setCor(String cor) {
         if (cor == null || cor.isBlank()) {
             throw new IllegalArgumentException("A cor do celular é obrigatória.");

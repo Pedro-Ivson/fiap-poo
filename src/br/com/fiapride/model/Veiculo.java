@@ -6,6 +6,7 @@ package br.com.fiapride.model;
 public class Veiculo {
     private String placa;
     private final String modelo;
+    private double nivelCombustivel;
 
     /**
      * Cria um veículo com placa válida e modelo definido.
@@ -27,6 +28,28 @@ public class Veiculo {
 
     public String getModelo() {
         return this.modelo;
+    }
+
+    public double getNivelCombustivel() {
+        return nivelCombustivel;
+    }
+
+    /**
+     * Abastece o veículo com uma quantidade positiva de combustível, em litros.
+     */
+    public void abastecer(double quantidadeLitros) {
+        if (!Double.isFinite(quantidadeLitros) || quantidadeLitros <= 0) {
+            throw new IllegalArgumentException("A quantidade de combustível deve ser maior que zero.");
+        }
+
+        setNivelCombustivel(nivelCombustivel + quantidadeLitros);
+    }
+
+    /**
+     * Retorna a resposta genérica para veículos sem uma regra de autonomia própria.
+     */
+    public String calcularAutonomia() {
+        return "Autonomia não definida para um veículo genérico.";
     }
 
     /**
@@ -52,5 +75,13 @@ public class Veiculo {
         }
 
         this.placa = novaPlaca.trim();
+    }
+
+    private void setNivelCombustivel(double nivelCombustivel) {
+        if (!Double.isFinite(nivelCombustivel) || nivelCombustivel < 0) {
+            throw new IllegalArgumentException("O nível de combustível deve ser válido e não negativo.");
+        }
+
+        this.nivelCombustivel = nivelCombustivel;
     }
 }

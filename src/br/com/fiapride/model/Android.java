@@ -19,4 +19,9 @@ public class Android extends Celular {
     public String getVersaoAndroid() {
         return versaoAndroid;
     }
+
+    @Override
+    public String descreverSeguranca() {
+        return "Android " + versaoAndroid + ": autenticação por PIN, senha ou padrão.";
+    }
 }

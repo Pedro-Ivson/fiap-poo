@@ -4,6 +4,8 @@ import br.com.fiapride.model.Android;
 import br.com.fiapride.model.Bateria;
 import br.com.fiapride.model.Celular;
 import br.com.fiapride.model.Iphone;
+import java.util.ArrayList;
+import java.util.List;
 
 /**
  * Executável separado para testar o objeto pessoal Celular.
@@ -27,6 +29,15 @@ public class TesteCelular {
         System.out.println("iPhone: cor " + iphone.getCor()
                 + " | Memória livre: " + iphone.getMemoria() + "GB"
                 + " | Face ID ativo: " + iphone.isFaceIdAtivo());
+
+        System.out.println("\n--- Descrição polimórfica de segurança ---");
+        System.out.println(celular.descreverSeguranca());
+        List<Celular> aparelhos = new ArrayList<>();
+        aparelhos.add(android);
+        aparelhos.add(iphone);
+        for (Celular aparelho : aparelhos) {
+            System.out.println(aparelho.descreverSeguranca());
+        }
 
         celular.instalarAplicativo(10); // Cenário válido
 

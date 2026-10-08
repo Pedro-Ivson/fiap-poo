@@ -22,4 +22,10 @@ public class Carro extends Veiculo {
 
         this.capacidadePassageiros = capacidadePassageiros;
     }
+
+    @Override
+    public String calcularAutonomia() {
+        double quilometrosRestantes = getNivelCombustivel() * 10.0;
+        return "Autonomia: " + quilometrosRestantes + " km (Consumo de 10 km/l).";
+    }
 }

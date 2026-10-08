@@ -12,6 +12,7 @@ public class TesteVeiculo {
         Veiculo meuCarro = new Veiculo("ABC-1234", "Toyota Corolla");
         System.out.println("Modelo: " + meuCarro.getModelo()
                 + " | Placa: " + meuCarro.getPlaca());
+        System.out.println("Autonomia genérica: " + meuCarro.calcularAutonomia());
 
         meuCarro.atualizarPlaca("DEF-5678"); // Atualização válida
         meuCarro.atualizarPlaca("   "); // Atualização inválida; mantém a placa anterior

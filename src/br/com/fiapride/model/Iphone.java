@@ -15,4 +15,13 @@ public class Iphone extends Celular {
     public boolean isFaceIdAtivo() {
         return faceIdAtivo;
     }
+
+    @Override
+    public String descreverSeguranca() {
+        if (faceIdAtivo) {
+            return "iPhone: autenticação biométrica com Face ID ativa.";
+        }
+
+        return "iPhone: use o código de acesso; Face ID desativado.";
+    }
 }

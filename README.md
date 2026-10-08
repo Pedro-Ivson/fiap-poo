@@ -59,6 +59,20 @@ Herança é adequada quando a relação é “é um”: carro é um veículo e A
 um celular. Para representar algo que outro objeto tem, como um celular que
 tem uma bateria, permanece a associação da Aula 5.
 
+## Aula 7: polimorfismo de sobrescrita
+
+`Veiculo.calcularAutonomia()` define o contrato e uma resposta genérica.
+`Carro` sobrescreve o método considerando 10 km/l; `Moto` considera 35 km/l.
+O nível de combustível começa em zero e `abastecer` aceita quantidades
+positivas em litros. `SistemaPrincipal` coloca um carro e uma moto a combustão
+em `List<Veiculo>` e chama o mesmo método em um laço, sem verificar o tipo
+concreto.
+
+O microdesafio do projeto pessoal também está aplicado: `Celular` define a
+descrição genérica de segurança, enquanto `Android` e `Iphone` sobrescrevem o
+método com respostas próprias. `TesteCelular` percorre ambos em uma
+`List<Celular>` e mostra a seleção dinâmica da implementação.
+
 ## Encapsulamento
 
 Os atributos do modelo são privados. Uma subclasse não acessa diretamente os
@@ -71,11 +85,12 @@ construção, a placa só pode ser atualizada pela operação pública herdada
 ## Executáveis de demonstração
 
 - `SistemaPrincipal`: demonstra `Carro` e `Moto`, getters herdados e o uso de
-  um `Carro` como veículo de uma viagem.
+  uma lista polimórfica de veículos, o cálculo de autonomia e o uso de um
+  `Carro` como veículo de uma viagem.
 - `TesteCelular`: demonstra a associação com `Bateria` e as subclasses
-  `Android` e `Iphone`.
-- `TesteVeiculo`: demonstra a criação de `Veiculo` e a atualização válida e
-  inválida da placa.
+  `Android` e `Iphone`, incluindo o laço polimórfico de segurança.
+- `TesteVeiculo`: demonstra a resposta genérica de autonomia, a criação de
+  `Veiculo` e a atualização válida e inválida da placa.
 
 No PowerShell:
 
@@ -103,3 +118,11 @@ em um estado inválido ou contornar a lógica da classe mãe.
 `super(placa, modelo)` pede à superclasse que inicialize os dados; `setPlaca` não pode ser
 chamado pela filha por também ser privado. Uma atualização posterior usa
 `atualizarPlaca`, a operação pública que preserva a validação.
+
+## Reflexão da Aula 7
+
+O laço pode chamar `calcularAutonomia()` através de uma variável `Veiculo`
+porque a assinatura está declarada na classe base. Em execução, Java despacha
+a chamada para a implementação sobrescrita de `Carro` ou `Moto`. Sem o método
+na superclasse, a variável `Veiculo` não teria esse contrato disponível no
+tempo de compilação, mesmo que as subclasses declarassem métodos com esse nome.

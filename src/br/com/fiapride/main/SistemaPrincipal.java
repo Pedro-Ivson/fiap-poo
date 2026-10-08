@@ -3,7 +3,10 @@ package br.com.fiapride.main;
 import br.com.fiapride.model.Carro;
 import br.com.fiapride.model.Moto;
 import br.com.fiapride.model.Passageiro;
+import br.com.fiapride.model.Veiculo;
 import br.com.fiapride.model.Viagem;
+import java.util.ArrayList;
+import java.util.List;
 
 /**
  * Executável principal do FiapRide.
@@ -26,6 +29,19 @@ public class SistemaPrincipal {
                 + " | Placa: " + mottu.getPlaca());
         if (mottu.isEletrica()) {
             System.out.println("Atenção: esta moto é elétrica.");
+        }
+
+        System.out.println("\n--- Relatório polimórfico de autonomia da frota ---");
+        List<Veiculo> frota = new ArrayList<>();
+        frota.add(uberX);
+        // O cálculo de 35 km/l da aula representa uma moto a combustão.
+        frota.add(new Moto("DEF-5678", "Honda CG 160", false));
+
+        for (Veiculo veiculo : frota) {
+            System.out.println("Veículo: " + veiculo.getModelo());
+            veiculo.abastecer(50);
+            System.out.println(veiculo.calcularAutonomia());
+            System.out.println("---------------------------------------");
         }
 
         System.out.println("\n--- Solicitação da viagem ---");

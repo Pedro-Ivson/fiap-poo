@@ -19,17 +19,23 @@ class Passageiro {
 class Veiculo {
     - String placa
     - String modelo
+    - double nivelCombustivel
     + Veiculo(String placa, String modelo)
     + void atualizarPlaca(String novaPlaca)
     + String getPlaca()
     + String getModelo()
+    + double getNivelCombustivel()
+    + void abastecer(double quantidadeLitros)
+    + String calcularAutonomia()
     - void setPlaca(String novaPlaca)
+    - void setNivelCombustivel(double nivelCombustivel)
 }
 
 class Carro {
     - int capacidadePassageiros
     + Carro(String placa, String modelo, int capacidadePassageiros)
     + int getCapacidadePassageiros()
+    + String calcularAutonomia()
     - void setCapacidadePassageiros(int capacidadePassageiros)
 }
 
@@ -37,6 +43,7 @@ class Moto {
     - boolean isEletrica
     + Moto(String placa, String modelo, boolean isEletrica)
     + boolean isEletrica()
+    + String calcularAutonomia()
 }
 
 class Viagem {
@@ -60,6 +67,7 @@ class Celular {
     + int getMemoriaTotal()
     + int getMemoria()
     + Bateria getBateria()
+    + String descreverSeguranca()
     - void setCor(String cor)
     - void setMemoria(int valor)
 }
@@ -68,12 +76,14 @@ class Android {
     - String versaoAndroid
     + Android(String cor, int memoriaTotal, int memoriaInicial, Bateria bateria, String versaoAndroid)
     + String getVersaoAndroid()
+    + String descreverSeguranca()
 }
 
 class Iphone {
     - boolean faceIdAtivo
     + Iphone(String cor, int memoriaTotal, int memoriaInicial, Bateria bateria, boolean faceIdAtivo)
     + boolean isFaceIdAtivo()
+    + String descreverSeguranca()
 }
 
 class Bateria {
